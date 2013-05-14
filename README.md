@@ -3,13 +3,15 @@ progress-md5-copy
 
 Usage: `progress-md5-copy SOURCE [DEST]`
 
-Copies SOURCE to DEST, while displaying progress and writing an MD5sum to SOURCE.md5.
+Copies `SOURCE` to `DEST`, while displaying progress and writing an MD5sum to `SOURCE.md5`.
 
-SOURCE must be a regular file.
+`SOURCE` must be a regular file.
 
-DEST can be a directory or a filename. (Defaults to current directory.)
+`DEST` can be a directory or a filename. (Defaults to current directory.)
 
-If SOURCE.md5 exists then it is checked against SOURCE instead of creating a new checksum.
+If `SOURCE.md5` exists then it is checked against `SOURCE` instead of creating a new checksum.
+
+The script uses the `tee` command to compute the MD5sum while performing the copy at the same time. `SOURCE` is only read once. (Good for giant files.)
 
 Requirements
 ------------
