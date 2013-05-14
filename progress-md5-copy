@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# --------------------------------------
+# Startup
+
+for i in pv md5sum
+do
+  command -v $i >/dev/null 2>&1 || { echo >&2 "`basename $0` requires $i but it's not installed. Aborting."; exit 1; }
+done
+
+f_help=0
+while getopts "h" opt; do
+  shift
+  case $opt in
+    h) f_help=1;;
+    \?) f_help=1;;
+  esac
+done
+
+source=$1
+dest=$2
+
+if [ $f_help == 0 ]; then
+  if [ ! -f "$source" ] || [ -z "$source" ]; then
+    echo -e "Error: SOURCE must be a regular file.\n"
+    f_help=1
+  fi
+
+  if [ -z "$dest" ]; then
+    dest=.
+  fi
+
+  source_dir=`dirname "$source"`
+  source_file=`basename "$source"`
+
+  if [ -f "$dest" ]; then
+    dest_dir=`dirname "$dest"`
+    dest_file=`basename "$dest"`
+  fi
+  if [ -d "$dest" ]; then
+    dest_dir=`dirname "$dest"`/`basename "$dest"`
+    dest_file=$source_file
+  else
+    if [ -d `dirname "$dest"` ]; then
+      dest_dir=`dirname "$dest"`
+      dest_file=`basename "$dest"`
+    else
+      echo -e "Error: DEST or its parent must be a directory.\n"
+      f_help=1
+    fi
+  fi
+
+  has_md5=0
+  if [ -f "$source_dir/$source_file.md5" ]; then
+    has_md5=1
+  fi
+fi
+
+# --------------------------------------
+# Functions
+
+function help {
+  cat <<EOT
+Usage: `basename $0` SOURCE [DEST]
+
+Copies SOURCE to DEST, while displaying progress and writing an MD5sum
+to SOURCE.md5.
+
+SOURCE must be a regular file.
+
+DEST can be a directory or a filename. (Defaults to current directory.)
+
+If SOURCE.md5 exists then it is checked against SOURCE instead of
+creating a new checksum.
+EOT
+}
+
+# --------------------------------------
+# Main
+
+if [ $f_help == 1 ]; then
+  help
+  exit
+fi
+
+echo Copying
+echo "   \"$source_dir/$source_file\""
+echo to
+echo "   \"$dest_dir/$dest_file\""
+
+if [ $has_md5 == 1 ]; then
+  echo and checking existing MD5sum \"$source_dir/$source_file.md5\"
+  echo
+  pv "$source_dir/$source_file" | \
+    tee "$dest_dir/$dest_file" |
+    md5sum --check "$source_dir/$source_file.md5"
+else
+  echo and creating MD5sum in \"$dest_dir/$dest_file.md5\"
+  echo
+  pv "$source_dir/$source_file" | \
+    tee "$dest_dir/$dest_file" |
+    md5sum >"$dest_dir/$dest_file.md5"
+fi
