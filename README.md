@@ -13,8 +13,6 @@ If `SOURCE.md5` exists then it is checked against `SOURCE` instead of creating a
 
 The script uses the `tee` command to compute the MD5sum while performing the copy at the same time. `SOURCE` is only read once. (Good for giant files.)
 
-**Note: When an MD5sum is found and checked during a copy, it is only checked against the content of SOURCE. DEST is not read back to make sure it was written correctly.**
-
 Requirements
 ------------
 

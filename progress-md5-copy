@@ -91,21 +91,32 @@ if [ $f_help == 1 ]; then
   exit
 fi
 
-echo Copying
-echo "   \"$source_dir/$source_file\""
-echo to
-echo "   \"$dest_dir/$dest_file\""
+echo "Copying               $source_dir/$source_file"
+echo "to                    $dest_dir/$dest_file"
 
 if [ $has_md5 == 1 ]; then
-  echo and checking existing MD5sum \"$source_dir/$source_file.md5\"
+
+  echo "and checking against  $source_dir/$source_file.md5"
   echo
   pv "$source_dir/$source_file" | \
     tee "$dest_dir/$dest_file" |
     md5sum --check "$source_dir/$source_file.md5"
+  cp "$source_dir/$source_file.md5" "$dest_dir/$dest_file.md5"
+
 else
-  echo and creating MD5sum in \"$dest_dir/$dest_file.md5\"
+
+  echo "and creating          $dest_dir/$dest_file.md5"
   echo
   pv "$source_dir/$source_file" | \
     tee "$dest_dir/$dest_file" |
     md5sum >"$dest_dir/$dest_file.md5"
+
 fi
+
+echo
+echo "Checking              $dest_dir/$dest_file"
+echo "against               $dest_dir/$dest_file.md5"
+echo Type CTRL-C to abort verification step.
+echo
+pv "$dest_dir/$dest_file" | \
+  md5sum --check "$dest_dir/$dest_file.md5"
