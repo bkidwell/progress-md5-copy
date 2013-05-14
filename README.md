@@ -47,7 +47,7 @@ and creating MD5sum in "/media/thumbdrive/important-vm.tar.gz.md5"
 Unmount the thumbdrive, move to the destination machine and mount it there. Then:
 
 ```bash
-$ ~/binprogress-md5-copy /media/thumbdrive/important-vm.tar.gz ~/Transfer
+$ ~/bin/progress-md5-copy /media/thumbdrive/important-vm.tar.gz ~/Transfer
 Copying
    "/media/thumbdrive/important-vm.tar.gz"
 to
