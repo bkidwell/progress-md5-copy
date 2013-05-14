@@ -37,28 +37,37 @@ On the source machine, you would mount the thumbdrive and then do:
 
 ```bash
 $ ~/bin/progress-md5-copy ~/Transfer/important-vm.tar.gz /media/thumbdrive
-Copying
-   "~/Transfer/important-vm.tar.gz"
-to
-   "/media/thumbdrive/important-vm.tar.gz"
-and creating MD5sum in "/media/thumbdrive/important-vm.tar.gz.md5"
+Copying               ~/Transfer/important-vm.tar.gz
+to                    /media/thumbdrive/important-vm.tar.gz
+and creating          /media/thumbdrive/important-vm.tar.gz.md5
 
   3GB 0:00:30 [ 100MB/s] [===================================>] 100%
+
+Checking              /media/thumbdrive/important-vm.tar.gz
+against               /media/thumbdrive/important-vm.tar.gz.md5
+Type CTRL-C to abort verification step.
+
+  3GB 0:00:30 [ 100MB/s] [===================================>] 100%            
+-: OK
 ```
 
 Unmount the thumbdrive, move to the destination machine and mount it there. Then:
 
 ```bash
 $ ~/bin/progress-md5-copy /media/thumbdrive/important-vm.tar.gz ~/Transfer
-Copying
-   "/media/thumbdrive/important-vm.tar.gz"
-to
-   "~/Transfer/important-vm.tar.gz"
-and checking existing MD5sum "/media/thumbdrive/important-vm.tar.gz.md5"
+Copying               /media/thumbdrive/important-vm.tar.gz
+to                    ~/Transfer/important-vm.tar.gz
+and checking against  /media/thumbdrive/important-vm.tar.gz.md5
+
+  3GB 0:00:30 [ 100MB/s] [===================================>] 100%
+-: OK
+
+Checking              ~/Transfer/important-vm.tar.gz
+against               ~/Transfer/important-vm.tar.gz.md5
+Type CTRL-C to abort verification step.
 
   3GB 0:00:30 [ 100MB/s] [===================================>] 100%
 -: OK
 ```
 
 If the checksum didn't match, the last line would say something other than `OK`.
-
