@@ -1,6 +1,8 @@
 progress-md5-copy
 =================
 
+Usage: `progress-md5-copy SOURCE [DEST]`
+
 Copies SOURCE to DEST, while displaying progress and writing an MD5sum to SOURCE.md5.
 
 SOURCE must be a regular file.
@@ -12,7 +14,7 @@ If SOURCE.md5 exists then it is checked against SOURCE instead of creating a new
 Requirements
 ------------
 
-Requires the commands `pv` and `md5sum`.
+Should work on any Unix system. Requires the commands `pv` and `md5sum`.
 
 Install
 -------
